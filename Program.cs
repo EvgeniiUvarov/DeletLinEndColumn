@@ -11,22 +11,17 @@
 
 using static System.Console;
 
-WriteLine(String.Join(", ", PrintResult(new int[]{0, 1, 1, 1, 1, 0, 0, 0, 1}, new int[]{2, 3, 3, 1})));
+WriteLine(String.Join(", ", GetResult(new int[]{0, 1, 1, 1, 1, 0, 0, 0, 1}, new int[]{2, 3, 3, 1})));
 
-double[] PrintResult(int[]dat, int[] inf)
+int[] GetResult(int[] data, int[] inf)
 {
-   double[] result = new double[inf.Length];
-   int count = 0;
+   int[] result = new int[inf.Length];
+   string subData = String.Join("",data);
    for (int i = 0; i < inf.Length; i++)
    {
-      for (int j = 0; j < inf[i]; j++)
-      {
-         result[i] += dat[count] * Math.Pow(2, inf[i]-j-1);
-         count++;
-      }
+      string str = subData.Substring(0, inf[i]);
+      result[i] = Convert.ToInt32(str, 2);
+      subData = subData.Remove(0, inf[i]);
    }
    return result;
 }
-
-
-
