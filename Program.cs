@@ -1,27 +1,74 @@
-﻿// Задача 72:** Заданы 2 массива: info и data. В массиве info хранятся двоичные представления нескольких чисел (без разделителя). 
-// В массиве data хранится информация о количестве бит, которые занимают числа из массива info. Напишите программу, которая составит
-// массив десятичных представлений чисел массива data с учётом информации из массива info.
-
-// Комментарий: первое число занимает 2 бита (01 -> 1); второе число занимает 3 бита (111 -> 7); третье число занимает 3 бита (000 -> 0; четвёртое число занимает 1 бит (1 -> 1)
-// Тимур: входные данные:
-// data = {0, 1, 1, 1, 1, 0, 0, 0, 1 }
-// info = {2, 3, 3, 1 }
-// выходные данные:
-// 1, 7, 0, 1
+﻿//Задача 59: Из двумерного массива целых чисел удалить строку и столбец, на пересечении которых расположен наименьший элемент.
 
 using static System.Console;
 
-WriteLine(String.Join(", ", GetResult(new int[]{0, 1, 1, 1, 1, 0, 0, 0, 1}, new int[]{2, 3, 3, 1})));
+int[,] array = new int[4,4];
+RandomArray(array);
+PrintArray(array);
+WriteLine();
+int[] serch = SerchMinNum(array);
+PrintArray(DeletLinEndColum(array,serch));
 
-int[] GetResult(int[] data, int[] inf)
+int[,] DeletLinEndColum(int[,] array, int[] serch)
 {
-   int[] result = new int[inf.Length];
-   string subData = String.Join("",data);
-   for (int i = 0; i < inf.Length; i++)
+   int[,] result = new int[array.GetLength(0)-1,array.GetLength(1)-1];
+   int x = 0;
+   int z = 0;
+   for (int i = 0; i < array.GetLength(0); i++)
    {
-      string str = subData.Substring(0, inf[i]);
-      result[i] = Convert.ToInt32(str, 2);
-      subData = subData.Remove(0, inf[i]);
+      for (int j = 0; j < array.GetLength(1); j++)
+      {
+         if(i != serch[0] && j != serch[1])
+         {
+            result[x,z] = array[i,j];
+            z ++;
+         }
+      }
+      z = 0;
+      if(i != serch[0]) x++;
    }
    return result;
+}
+
+int[] SerchMinNum(int[,] array)
+{
+   int curent = array[0,0];
+   int[] result = new int[2];
+   for (int i = 0; i < array.GetLength(0); i++)
+   {
+      for (int j = 0; j < array.GetLength(1); j++)
+      {
+         if(array[i,j] < curent)
+         {
+            curent = array[i,j];
+            result[0] = i;
+            result[1] = j;
+         }
+      }
+   }
+   return result;
+}
+
+void RandomArray(int[,] arr)
+{
+   for (int i = 0; i < arr.GetLength(0); i++)
+   {
+      for (int j = 0; j < arr.GetLength(1); j++)
+      {
+         arr[i,j] = new Random().Next(1,10);
+      }
+   }
+}
+
+void PrintArray(int[,] prinArray)
+{
+   for (int i = 0; i < prinArray.GetLength(0); i++)
+   {
+      for (int j = 0; j < prinArray.GetLength(1); j++)
+      {
+         if (prinArray[i,j] < 10) Write($"{prinArray[i,j]}  ");
+         else Write($"{prinArray[i,j]} ");
+      }
+      WriteLine();
+   }
 }
